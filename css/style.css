@@ -355,50 +355,90 @@ h2 {
     font-size: 0.8rem;
 }
 
+.card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
 .brutal-card h4 {
     font-family: 'Outfit', sans-serif;
     font-size: 1.4rem;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
+    color: var(--text-white);
 }
 
 .brutal-card p {
     color: var(--text-muted);
     font-size: 0.9rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.6;
 }
 
 .tech-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
 }
 
 .tech-badge {
-    background: rgba(37, 99, 235, 0.1);
+    background: rgba(30, 136, 229, 0.08);
     color: var(--accent-blue);
-    font-size: 0.8rem;
+    border: 1px solid rgba(30, 136, 229, 0.2);
+    font-size: 0.75rem;
     padding: 0.2rem 0.5rem;
     font-weight: 600;
 }
 
 .card-links {
     display: flex;
-    gap: 1rem;
+    gap: 0.8rem;
+    margin-top: auto; /* Empuja los enlaces al fondo */
 }
 
 .card-links a {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
     text-decoration: none;
     color: var(--text-white);
-    font-size: 0.85rem;
+    background: transparent;
+    border: 2px solid var(--border-color);
+    padding: 0.6rem 0.8rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
     font-weight: bold;
+    text-align: center;
+    transition: all 0.1s;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
 }
 
 .card-links a:hover {
-    text-decoration: underline;
+    background: var(--bg-main);
+    color: var(--text-white);
+    border-color: var(--text-white);
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+}
+
+.card-links a:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
 }
 
 .card-links a.live {
+    color: var(--accent-orange);
+    border-color: rgba(255, 127, 0, 0.4);
+}
+
+.card-links a.live:hover {
+    background: rgba(255, 127, 0, 0.08);
+    border-color: var(--accent-orange);
     color: var(--accent-orange);
 }
 
@@ -664,23 +704,36 @@ h2 {
 
 /* Botón sutil para leer más */
 .btn-read-more {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-family: 'Fira Code', monospace;
-    font-size: 0.75rem; /* Letra más chica */
+    display: block;
+    width: 100%;
+    background: var(--accent-blue);
+    color: white;
+    border: 3px solid var(--border-color);
+    padding: 0.8rem 1rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    margin-bottom: 1.5rem;
-    padding: 0;
-    text-decoration: underline;
-    text-decoration-style: dashed;
-    text-underline-offset: 4px;
-    transition: color 0.2s;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    transition: all 0.1s;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+    text-decoration: none;
 }
 
 .btn-read-more:hover {
+    background: white;
     color: var(--accent-blue);
-    text-decoration-style: solid;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
+}
+
+.btn-read-more:active {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
 }
 
 /* ============================
