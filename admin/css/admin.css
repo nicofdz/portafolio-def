@@ -1,0 +1,289 @@
+/* admin/css/admin.css */
+
+/* General admin styling */
+.admin-login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-main);
+}
+
+.login-wrapper {
+    width: 100%;
+    max-width: 450px;
+    padding: 1rem;
+}
+
+.login-box h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin-bottom: 0.2rem;
+}
+
+.subtitle-login {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.w-100 {
+    width: 100%;
+    text-align: center;
+    display: block;
+    cursor: pointer;
+}
+
+.brutal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-white);
+}
+
+.form-group input, 
+.form-group textarea,
+.form-group select {
+    background: #14110f;
+    border: 2px solid var(--border-color);
+    padding: 0.8rem 1rem;
+    color: var(--text-white);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    transition: all 0.15s;
+    width: 100%;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 10px rgba(30, 136, 229, 0.2);
+}
+
+.alert-box {
+    padding: 1rem;
+    border: 2px solid;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    font-family: 'Fira Code', monospace;
+}
+
+.alert-box.error {
+    background: rgba(196, 30, 58, 0.15);
+    border-color: var(--accent-red);
+    color: #ff8899;
+}
+
+.alert-box.success {
+    background: rgba(45, 80, 22, 0.15);
+    border-color: #55a826;
+    color: #88ff88;
+}
+
+.back-link {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.back-link a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+.back-link a:hover {
+    color: var(--text-white);
+    text-decoration: underline;
+}
+
+/* Admin Dashboard layout */
+.admin-navbar {
+    border-bottom: 3px solid var(--border-color);
+    background: var(--bg-boxes);
+    padding: 1rem 0;
+    margin-bottom: 2.5rem;
+}
+
+.admin-nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-menu {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+.admin-menu a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.admin-menu a:hover, 
+.admin-menu .active {
+    color: var(--text-white);
+    text-decoration: underline;
+}
+
+.btn-logout {
+    border: 2px solid var(--accent-red);
+    background: transparent;
+    color: #ff5577;
+    padding: 0.4rem 0.8rem;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.btn-logout:hover {
+    background: var(--accent-red);
+    color: white;
+}
+
+/* Dashboard Summary Cards */
+.admin-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.admin-card-body {
+    padding: 1.5rem;
+}
+
+.admin-card-body h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.admin-card-body p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.dashboard-stat {
+    font-size: 3rem;
+    font-weight: 900;
+    font-family: 'Outfit', sans-serif;
+    color: var(--accent-blue);
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
+/* Admin lists and tables */
+.admin-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.admin-section-header h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+}
+
+.admin-table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 3px solid var(--border-color);
+    background: var(--bg-boxes);
+    margin-bottom: 3rem;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-table th, 
+.admin-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+    font-size: 0.9rem;
+}
+
+.admin-table th {
+    background: rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+    color: var(--text-white);
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Actions list */
+.actions-cell {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.btn-admin-action {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-decoration: none;
+    border: 2px solid;
+    background: transparent;
+    transition: all 0.1s;
+}
+
+.btn-admin-action.edit {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+.btn-admin-action.edit:hover {
+    background: var(--accent-blue);
+    color: white;
+}
+
+.btn-admin-action.delete {
+    border-color: var(--accent-red);
+    color: #ff5577;
+}
+
+.btn-admin-action.delete:hover {
+    background: var(--accent-red);
+    color: white;
+}
+
+/* Pill values */
+.tag-pill {
+    display: inline-block;
+    background: rgba(30, 136, 229, 0.1);
+    border: 1px solid var(--accent-blue);
+    color: var(--text-white);
+    padding: 0.1rem 0.5rem;
+    font-size: 0.75rem;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+}
