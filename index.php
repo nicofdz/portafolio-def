@@ -239,11 +239,13 @@ try {
                             </div>
                         <?php endif; ?>
 
-                        <button class="btn-read-more trigger-modal" data-title="<?= htmlspecialchars($project['title'], ENT_QUOTES) ?>" data-desc="<?= htmlspecialchars($fullDesc, ENT_QUOTES) ?>" data-images="<?= htmlspecialchars(json_encode($cleanImages), ENT_QUOTES) ?>">Ver Detalles</button>
-                        
-                        <div class="card-links">
-                            <?php if (!empty($project['github_url'])): ?><a href="<?= htmlspecialchars($project['github_url']) ?>" target="_blank" class="link-btn"><i class="ph-bold ph-github-logo"></i> Código</a><?php endif; ?>
-                            <?php if (!empty($project['live_url'])): ?><a href="<?= htmlspecialchars($project['live_url']) ?>" target="_blank" class="link-btn live"><i class="ph-bold ph-broadcast"></i> Sitio Web</a><?php endif; ?>
+                        <div class="card-footer-actions">
+                            <button class="btn-read-more trigger-modal" data-title="<?= htmlspecialchars($project['title'], ENT_QUOTES) ?>" data-desc="<?= htmlspecialchars($fullDesc, ENT_QUOTES) ?>" data-images="<?= htmlspecialchars(json_encode($cleanImages), ENT_QUOTES) ?>">Ver Detalles</button>
+                            
+                            <div class="card-links">
+                                <?php if (!empty($project['github_url'])): ?><a href="<?= htmlspecialchars($project['github_url']) ?>" target="_blank" class="link-btn"><i class="ph-bold ph-github-logo"></i> Código</a><?php endif; ?>
+                                <?php if (!empty($project['live_url'])): ?><a href="<?= htmlspecialchars($project['live_url']) ?>" target="_blank" class="link-btn live"><i class="ph-bold ph-broadcast"></i> Sitio Web</a><?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 </article>

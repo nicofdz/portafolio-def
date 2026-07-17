@@ -132,6 +132,12 @@ nav a:hover {
     border: 3px solid var(--border-color);
 }
 
+.brutal-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .card-image {
     width: 100%;
     height: 200px;
@@ -392,10 +398,17 @@ h2 {
     font-weight: 600;
 }
 
+.card-footer-actions {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+}
+
 .card-links {
     display: flex;
     gap: 0.8rem;
-    margin-top: auto; /* Empuja los enlaces al fondo */
 }
 
 .card-links a {
@@ -716,8 +729,6 @@ h2 {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     cursor: pointer;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
     text-align: center;
     transition: all 0.1s;
     box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
