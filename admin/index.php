@@ -3,6 +3,9 @@
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../config/db.php';
 
+$success = $_GET['success'] ?? '';
+$error = $_GET['error'] ?? '';
+
 try {
     $projectCount = $pdo->query("SELECT COUNT(*) FROM projects")->fetchColumn();
     $certCount = $pdo->query("SELECT COUNT(*) FROM certifications")->fetchColumn();
@@ -50,6 +53,13 @@ try {
             <h2>Bienvenido, Administrador</h2>
             <a href="../" target="_blank" class="btn-brutal-secondary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Ver Sitio Público</a>
         </div>
+
+        <?php if (!empty($success)): ?>
+            <div class="alert success" style="margin-bottom: 1.5rem; background: rgba(30, 136, 229, 0.08); border: 2px solid var(--accent-blue); color: var(--accent-blue); padding: 1rem; font-family: 'Fira Code', monospace; font-size: 0.9rem; font-weight: bold;"><?= htmlspecialchars($success) ?></div>
+        <?php endif; ?>
+        <?php if (!empty($error)): ?>
+            <div class="alert error" style="margin-bottom: 1.5rem; background: rgba(239, 68, 68, 0.08); border: 2px solid var(--accent-red); color: var(--accent-red); padding: 1rem; font-family: 'Fira Code', monospace; font-size: 0.9rem; font-weight: bold;"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
 
         <div class="admin-dashboard-grid">
             
@@ -103,7 +113,10 @@ try {
                     </div>
                     <h3>Monitor de Tráfico</h3>
                     <p>Monitorea las visitas totales acumuladas y los navegadores conectados actualmente en tiempo real.</p>
-                    <button onclick="window.location.reload();" class="btn-brutal-secondary w-100" style="padding: 0.6rem; font-size: 0.85rem;"><i class="ph-bold ph-arrows-clockwise"></i> Actualizar Monitor</button>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                        <button onclick="window.location.reload();" class="btn-brutal-secondary" style="flex: 1; padding: 0.6rem; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; cursor: pointer;"><i class="ph-bold ph-arrows-clockwise"></i> Actualizar</button>
+                        <a href="reset_views.php" class="btn-brutal-secondary" onclick="return confirm('¿Estás seguro de que deseas reiniciar el conteo de visitas a 0? Esta acción no se puede deshacer.');" style="flex: 1; padding: 0.6rem; font-size: 0.85rem; text-decoration: none; color: var(--accent-red); border-color: rgba(239, 68, 68, 0.4); display: flex; align-items: center; justify-content: center; gap: 0.3rem; text-align: center; cursor: pointer;"><i class="ph-bold ph-trash"></i> Reiniciar</a>
+                    </div>
                 </div>
             </div>
 
