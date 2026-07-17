@@ -181,8 +181,16 @@ try {
         </section>
 
         <section id="proyectos" class="section-block">
-            <h3 class="block-heading"><i class="ph-bold ph-folder-open"></i> Proyectos Destacados y Experiencia Profesional</h3>
-            <div class="projects-grid">
+            <div class="projects-header-wrapper">
+                <h3 class="block-heading"><i class="ph-bold ph-folder-open"></i> Proyectos Destacados y Experiencia Profesional</h3>
+                <?php if (count($projects) > 3): ?>
+                    <div class="projects-carousel-controls">
+                        <button id="prev-project-btn" class="carousel-arrow-btn" aria-label="Anterior"><i class="ph ph-arrow-left"></i></button>
+                        <button id="next-project-btn" class="carousel-arrow-btn" aria-label="Siguiente"><i class="ph ph-arrow-right"></i></button>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="<?= count($projects) > 3 ? 'projects-carousel' : 'projects-grid' ?>" id="projects-container">
             <?php foreach ($projects as $project): ?>
                 <article class="brutal-card">
                     <?php 
@@ -513,6 +521,28 @@ try {
                 closeLightbox();
             }
         });
+
+        // Lógica del Carrusel de Proyectos
+        const projectsContainer = document.getElementById('projects-container');
+        const prevProjBtn = document.getElementById('prev-project-btn');
+        const nextProjBtn = document.getElementById('next-project-btn');
+
+        if (projectsContainer && prevProjBtn && nextProjBtn) {
+            prevProjBtn.addEventListener('click', () => {
+                const firstCard = projectsContainer.querySelector('.brutal-card');
+                if (firstCard) {
+                    const cardWidth = firstCard.offsetWidth + 32; // card width + 2rem gap
+                    projectsContainer.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+                }
+            });
+            nextProjBtn.addEventListener('click', () => {
+                const firstCard = projectsContainer.querySelector('.brutal-card');
+                if (firstCard) {
+                    const cardWidth = firstCard.offsetWidth + 32; // card width + 2rem gap
+                    projectsContainer.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                }
+            });
+        }
 
         document.addEventListener('keydown', (e) => {
             if(e.key === 'Escape') {

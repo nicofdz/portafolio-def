@@ -293,13 +293,56 @@ h2 {
     padding: 4rem 0;
 }
 
+.projects-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px dashed var(--border-color);
+    padding-bottom: 0.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
 .block-heading {
     font-family: 'Outfit', sans-serif;
     font-size: 1.8rem;
     font-weight: 800;
-    margin-bottom: 2rem;
-    border-bottom: 2px dashed var(--border-color);
-    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+    border: none;
+    padding-bottom: 0;
+}
+
+.projects-carousel-controls {
+    display: flex;
+    gap: 0.6rem;
+}
+
+.carousel-arrow-btn {
+    background: var(--bg-boxes);
+    color: var(--text-white);
+    border: 2px solid var(--border-color);
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.1s;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.4);
+}
+
+.carousel-arrow-btn:hover {
+    background: var(--accent-blue);
+    color: white;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+}
+
+.carousel-arrow-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: none;
 }
 
 /* About Section */
@@ -348,6 +391,48 @@ h2 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 2rem;
+}
+
+.projects-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 2rem;
+    padding-bottom: 1.5rem;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-blue) var(--bg-boxes);
+}
+
+.projects-carousel::-webkit-scrollbar {
+    height: 8px;
+}
+
+.projects-carousel::-webkit-scrollbar-track {
+    background: var(--bg-boxes);
+    border: 1px solid var(--border-color);
+}
+
+.projects-carousel::-webkit-scrollbar-thumb {
+    background-color: var(--accent-blue);
+    border: 1px solid var(--border-color);
+}
+
+.projects-carousel .brutal-card {
+    flex: 0 0 calc(33.333% - 1.333rem); /* Muestra 3 tarjetas exactamente */
+    scroll-snap-align: start;
+}
+
+@media (max-width: 900px) {
+    .projects-carousel .brutal-card {
+        flex: 0 0 calc(50% - 1rem); /* Muestra 2 en tablet */
+    }
+}
+
+@media (max-width: 600px) {
+    .projects-carousel .brutal-card {
+        flex: 0 0 100%; /* Muestra 1 en celular */
+    }
 }
 
 .brutal-card .card-top {
