@@ -1,6 +1,7 @@
 <?php
 // index.php
 require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/config/tracker.php';
 
 try {
     $stmtSettings = $pdo->query("SELECT * FROM portfolio_settings LIMIT 1");
@@ -277,8 +278,12 @@ try {
     </main>
 
     <footer class="terminal-footer">
-        <div class="container footer-content" style="position: relative;">
+        <div class="container footer-content" style="position: relative; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <div><p>© <?= date('Y') ?> Nicolás Fernández</p></div>
+            <div class="system-stats-panel" style="font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--text-muted); display: flex; gap: 1.5rem; border: 1px dashed var(--border-color); padding: 0.5rem 1rem; background: rgba(0,0,0,0.2);">
+                <span><i class="ph-bold ph-eye" style="color: var(--accent-blue);"></i> Visitas: <strong id="total-views-counter" style="color: white;"><?= number_format($totalViews) ?></strong></span>
+                <span><i class="ph-bold ph-users" style="color: #25D366;"></i> En Línea: <strong id="active-users-counter" style="color: #25D366;"><?= (int)$activeUsers ?></strong></span>
+            </div>
         </div>
     </footer>
 
@@ -543,6 +548,35 @@ try {
                 }
             });
         }
+
+        // Lógica de actualización del contador en tiempo real (Poller)
+        function updateTrackerStats() {
+            let projectBasePath = '';
+            const path = window.location.pathname;
+            if (path.includes('/index.php')) {
+                projectBasePath = path.substring(0, path.indexOf('/index.php'));
+            } else {
+                projectBasePath = path.endsWith('/') ? path.slice(0, -1) : path;
+            }
+            const apiUrl = projectBasePath + '/api/tracker_status.php';
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const viewsEl = document.getElementById('total-views-counter');
+                    const usersEl = document.getElementById('active-users-counter');
+                    if (viewsEl && data.total_views !== undefined) {
+                        viewsEl.textContent = Number(data.total_views).toLocaleString();
+                    }
+                    if (usersEl && data.active_users !== undefined) {
+                        usersEl.textContent = data.active_users;
+                    }
+                })
+                .catch(err => console.error("Error al actualizar estadísticas:", err));
+        }
+
+        // Ejecutar cada 15 segundos para mantener la sesión viva y actualizar el contador
+        setInterval(updateTrackerStats, 15000);
 
         document.addEventListener('keydown', (e) => {
             if(e.key === 'Escape') {
