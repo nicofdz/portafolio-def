@@ -76,7 +76,10 @@ function uploadFile($file, $allowedTypes = [], $subfolder = '') {
     if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
         $host = $_SERVER['HTTP_HOST'];
-        $urlPath = "/Portafolio/uploads/" . ($subfolder ? trim($subfolder, '/') . '/' : '') . $uniqueName;
+        
+        $scriptName = $_SERVER['SCRIPT_NAME'];
+        $projectBasePath = substr($scriptName, 0, strpos($scriptName, '/admin/')); // ej: "/Portafolio" o ""
+        $urlPath = $projectBasePath . "/uploads/" . ($subfolder ? trim($subfolder, '/') . '/' : '') . $uniqueName;
         $fileUrl = $protocol . "://" . $host . $urlPath;
         
         return ['success' => true, 'url' => $fileUrl];

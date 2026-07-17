@@ -6,7 +6,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Si ya está logueado, ir al dashboard
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
-    header('Location: /Portafolio/admin/index.php');
+    $adminPath = substr($_SERVER['SCRIPT_NAME'], 0, strpos($_SERVER['SCRIPT_NAME'], '/admin/') + 7);
+    header('Location: ' . $adminPath . 'index.php');
     exit;
 }
 
@@ -26,7 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($adminPass) && $user === $adminUser && $pass === $adminPass) {
         $_SESSION['admin_logged_in'] = true;
-        header('Location: /Portafolio/admin/index.php');
+        $adminPath = substr($_SERVER['SCRIPT_NAME'], 0, strpos($_SERVER['SCRIPT_NAME'], '/admin/') + 7);
+        header('Location: ' . $adminPath . 'index.php');
         exit;
     } else {
         $error = 'Usuario o contraseña incorrectos.';
