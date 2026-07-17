@@ -6,7 +6,11 @@ require_once __DIR__ . '/../config/db.php';
 try {
     $projectCount = $pdo->query("SELECT COUNT(*) FROM projects")->fetchColumn();
     $certCount = $pdo->query("SELECT COUNT(*) FROM certifications")->fetchColumn();
-    $settings = $pdo->query("SELECT hero_title FROM portfolio_settings LIMIT 1")->fetch();
+    $settings = $pdo->query("SELECT hero_title, view_count FROM portfolio_settings LIMIT 1")->fetch();
+    
+    // Limpiar sesiones inactivas y contar usuarios en línea
+    $pdo->exec("DELETE FROM active_sessions WHERE last_activity < NOW() - INTERVAL '1 minute'");
+    $activeCount = $pdo->query("SELECT COUNT(*) FROM active_sessions")->fetchColumn();
 } catch (PDOException $e) {
     die("Error de conexión a la base de datos: " . $e->getMessage());
 }
@@ -18,6 +22,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - Nicolás Fernández</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="css/admin.css">
 </head>
@@ -83,6 +88,22 @@ try {
                     <h3>Certificaciones</h3>
                     <p>Administra las certificaciones obtenidas y su orden de prioridad en la tabla.</p>
                     <a href="certifications/index.php" class="btn-brutal-primary">Gestionar Certificados</a>
+                </div>
+            </div>
+
+            <div class="brutal-card">
+                <div class="box-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="box-title">traffic_monitor.sh</span>
+                </div>
+                <div class="admin-card-body">
+                    <div class="dashboard-stat" style="font-size: 1.8rem; display: flex; justify-content: space-around; font-family: 'Fira Code', monospace; margin-bottom: 1rem;">
+                        <span style="color: white; font-weight: 900; font-size: 2.2rem;"><?= number_format($settings['view_count'] ?? 0) ?><span style="display:block; font-size: 0.8rem; color: var(--text-muted); font-weight: normal; margin-top: 0.2rem;">Visitas</span></span>
+                        <span style="color: #25D366; font-weight: 900; font-size: 2.2rem;"><?= (int)$activeCount ?><span style="display:block; font-size: 0.8rem; color: var(--text-muted); font-weight: normal; margin-top: 0.2rem;">En Línea</span></span>
+                    </div>
+                    <h3>Monitor de Tráfico</h3>
+                    <p>Monitorea las visitas totales acumuladas y los navegadores conectados actualmente en tiempo real.</p>
+                    <button onclick="window.location.reload();" class="btn-brutal-secondary w-100" style="padding: 0.6rem; font-size: 0.85rem;"><i class="ph-bold ph-arrows-clockwise"></i> Actualizar Monitor</button>
                 </div>
             </div>
 
