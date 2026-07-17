@@ -181,7 +181,7 @@ try {
         </section>
 
         <section id="proyectos" class="section-block">
-            <h3 class="block-heading"><i class="ph-bold ph-folder-open"></i> Proyectos Destacados</h3>
+            <h3 class="block-heading"><i class="ph-bold ph-folder-open"></i> Proyectos Destacados y Experiencia Profesional</h3>
             <div class="projects-grid">
             <?php foreach ($projects as $project): ?>
                 <article class="brutal-card">
