@@ -7,7 +7,7 @@ $success = $_GET['success'] ?? '';
 $error = $_GET['error'] ?? '';
 
 try {
-    $stmt = $pdo->query("SELECT * FROM projects ORDER BY created_at DESC");
+    $stmt = $pdo->query("SELECT * FROM projects ORDER BY display_order ASC, created_at DESC");
     $projects = $stmt->fetchAll();
 } catch (PDOException $e) {
     $error = "Error al cargar los proyectos: " . $e->getMessage();
@@ -75,6 +75,7 @@ function getTagsString($postgresArray) {
                         <th>Título</th>
                         <th>Tecnologías (Tags)</th>
                         <th>URLs de Enlace</th>
+                        <th style="width: 80px; text-align: center;">Orden</th>
                         <th style="width: 100px; text-align: center;">Visible</th>
                         <th style="width: 180px; text-align: center;">Acciones</th>
                     </tr>
@@ -82,7 +83,7 @@ function getTagsString($postgresArray) {
                 <tbody>
                     <?php if (empty($projects)): ?>
                         <tr>
-                            <td colspan="5" style="text-align: center; color: var(--text-muted);">No hay proyectos registrados en este momento.</td>
+                            <td colspan="6" style="text-align: center; color: var(--text-muted);">No hay proyectos registrados en este momento.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($projects as $project): ?>
@@ -104,6 +105,8 @@ function getTagsString($postgresArray) {
                                     <?php if (!empty($project['live_url'])): ?>
                                         <a href="<?= htmlspecialchars($project['live_url']) ?>" target="_blank" style="color: #55a826;">Demo</a>
                                     <?php endif; ?>
+                                </td>
+                                <td style="text-align: center; font-weight: bold; color: var(--accent-orange);"><?= (int)$project['display_order'] ?></td>
                                 <td style="text-align: center; vertical-align: middle;">
                                     <form method="POST" action="toggle_visibility.php" style="display:inline;">
                                         <input type="hidden" name="id" value="<?= htmlspecialchars($project['id']) ?>">

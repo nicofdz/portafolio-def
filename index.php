@@ -6,7 +6,7 @@ try {
     $stmtSettings = $pdo->query("SELECT * FROM portfolio_settings LIMIT 1");
     $settings = $stmtSettings->fetch();
 
-    $stmtProjects = $pdo->query("SELECT * FROM projects WHERE is_visible = TRUE ORDER BY created_at DESC");
+    $stmtProjects = $pdo->query("SELECT * FROM projects WHERE is_visible = TRUE ORDER BY display_order ASC, created_at DESC");
     $projects = $stmtProjects->fetchAll();
 
     $stmtCert = $pdo->query("SELECT * FROM certifications ORDER BY display_order ASC, created_at DESC");

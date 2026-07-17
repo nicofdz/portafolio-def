@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $liveUrl = $_POST['live_url'] ?? '';
     $tags = csvStringToPostgresArray($_POST['tags'] ?? '');
     $isVisible = isset($_POST['is_visible']) ? 1 : 0;
+    $displayOrder = (int)($_POST['display_order'] ?? 10);
     
     // Procesar imágenes existentes a conservar
     $existingUrls = $_POST['existing_image_urls'] ?? [];
@@ -93,7 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 live_url = :live_url,
                 tags = :tags,
                 image_urls = :image_urls,
-                is_visible = :is_visible
+                is_visible = :is_visible,
+                display_order = :display_order
                 WHERE id = :id");
             
             $updateStmt->execute([
@@ -104,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':tags' => $tags,
                 ':image_urls' => $imageUrls,
                 ':is_visible' => $isVisible,
+                ':display_order' => $displayOrder,
                 ':id' => $id
             ]);
             
@@ -112,9 +115,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // Insertar nuevo (generando un UUID para id, o dejar que la BD lo genere si usa auto-uuid)
             $insertStmt = $pdo->prepare("INSERT INTO projects (
-                title, description, github_url, live_url, tags, image_urls, is_visible, created_at
+                title, description, github_url, live_url, tags, image_urls, is_visible, display_order, created_at
             ) VALUES (
-                :title, :description, :github_url, :live_url, :tags, :image_urls, :is_visible, NOW()
+                :title, :description, :github_url, :live_url, :tags, :image_urls, :is_visible, :display_order, NOW()
             )");
             
             $insertStmt->execute([
@@ -124,7 +127,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':live_url' => $liveUrl,
                 ':tags' => $tags,
                 ':image_urls' => $imageUrls,
-                ':is_visible' => $isVisible
+                ':is_visible' => $isVisible,
+                ':display_order' => $displayOrder
             ]);
 
             header('Location: index.php?success=' . urlencode('Proyecto creado con éxito.'));
@@ -238,6 +242,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="form-group">
                         <label for="live_url">URL de la Demo en Vivo (Sitio Web)</label>
                         <input type="url" id="live_url" name="live_url" value="<?= htmlspecialchars($project['live_url'] ?? '') ?>" placeholder="https://mi-proyecto.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="display_order">Orden de Visualización (Números más pequeños se muestran primero)</label>
+                        <input type="number" id="display_order" name="display_order" value="<?= htmlspecialchars($project['display_order'] ?? '10') ?>" required min="0">
                     </div>
 
                     <div class="form-group" style="flex-direction: row; align-items: center; gap: 0.5rem; margin-top: 1rem; margin-bottom: 1.5rem;">
