@@ -1,0 +1,14 @@
+# Proteger archivo de variables de entorno .env
+<Files .env>
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Proteger acceso directo a archivos php de configuración sensible
+<FilesMatch "^\.env|db\.php|tracker\.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Desactivar el listado de archivos en las carpetas (Directory Browsing)
+Options -Indexes
