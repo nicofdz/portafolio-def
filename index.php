@@ -222,8 +222,10 @@ try {
                     $fullImageUrl = (!empty($imageUrl) && trim($imageUrl) !== '') ? getStorageUrl($imageUrl) : null;
                     
                     if ($fullImageUrl): ?>
-                        <div class="card-image">
-                            <img src="<?= htmlspecialchars($fullImageUrl) ?>" alt="<?= htmlspecialchars($project['title']) ?>">
+                        <div class="card-image card-slideshow">
+                            <?php foreach ($fullImages as $idx => $imgUrl): ?>
+                                <img src="<?= htmlspecialchars($imgUrl) ?>" alt="<?= htmlspecialchars($project['title']) ?>" class="slide <?= $idx === 0 ? 'active' : '' ?>">
+                            <?php endforeach; ?>
                         </div>
                     <?php else: ?>
                         <div class="card-image placeholder-image" style="background: rgba(0, 0, 0, 0.3); display: flex; align-items: center; justify-content: center;">
@@ -569,6 +571,19 @@ try {
 
         // Ejecutar cada 15 segundos para mantener la sesión viva y actualizar el contador
         setInterval(updateTrackerStats, 15000);
+
+        // Lógica de Carrusel Automático de imágenes dentro de las Tarjetas
+        document.querySelectorAll('.card-slideshow').forEach(slideshow => {
+            const slides = slideshow.querySelectorAll('img.slide');
+            if (slides.length <= 1) return;
+
+            let currentIdx = 0;
+            setInterval(() => {
+                slides[currentIdx].classList.remove('active');
+                currentIdx = (currentIdx + 1) % slides.length;
+                slides[currentIdx].classList.add('active');
+            }, 4500); // Cambia la imagen cada 4.5 segundos con transición de opacidad
+        });
 
         document.addEventListener('keydown', (e) => {
             if(e.key === 'Escape') {
