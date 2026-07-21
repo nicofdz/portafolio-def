@@ -211,16 +211,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $savedImages = !empty($project['image_urls']) ? str_getcsv(trim($project['image_urls'], '{}')) : [];
                         if (!empty($savedImages)): ?>
                             <div class="form-group">
-                                <label>Imágenes actuales (Marca las que deseas conservar):</label>
+                                <label>Imágenes actuales:</label>
+                                <div style="display: flex; gap: 0.8rem; margin: 0.5rem 0;">
+                                    <button type="button" onclick="toggleAllImages(true)" class="btn-brutal-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; cursor: pointer;"><i class="ph ph-check-square"></i> Conservar Todas</button>
+                                    <button type="button" onclick="toggleAllImages(false)" class="btn-brutal-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; color: var(--accent-red); border-color: rgba(239, 68, 68, 0.4); cursor: pointer;"><i class="ph ph-trash"></i> Quitar Todas</button>
+                                </div>
                                 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
                                     <?php foreach ($savedImages as $img): 
                                         $imgClean = trim($img, '" ');
                                         if (empty($imgClean)) continue;
                                     ?>
-                                        <div style="border: 2px solid var(--border-color); padding: 0.5rem; background: #14110f; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                                            <img src="<?= htmlspecialchars(getStorageUrl($imgClean)) ?>" style="width: 100%; height: 80px; object-fit: cover;">
+                                        <div class="image-card-box" style="border: 2px solid var(--border-color); padding: 0.5rem; background: #14110f; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; transition: all 0.2s;">
+                                            <img src="<?= htmlspecialchars(getStorageUrl($imgClean)) ?>" style="width: 100%; height: 80px; object-fit: cover; transition: all 0.2s;">
                                             <label style="font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem; cursor: pointer; user-select: none;">
-                                                <input type="checkbox" name="existing_image_urls[]" value="<?= htmlspecialchars($imgClean) ?>" checked> Conservar
+                                                <input type="checkbox" name="existing_image_urls[]" value="<?= htmlspecialchars($imgClean) ?>" checked class="image-keep-cb"> Conservar
                                             </label>
                                         </div>
                                     <?php endforeach; ?>
@@ -261,5 +265,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     </main>
 
+    <script>
+        function toggleAllImages(checked) {
+            const checkboxes = document.querySelectorAll('.image-keep-cb');
+            checkboxes.forEach(cb => {
+                cb.checked = checked;
+                updateImageCardState(cb);
+            });
+        }
+
+        function updateImageCardState(cb) {
+            const card = cb.closest('.image-card-box');
+            if (card) {
+                if (cb.checked) {
+                    card.style.borderColor = 'var(--border-color)';
+                    card.style.background = '#14110f';
+                    card.querySelector('img').style.opacity = '1';
+                    card.querySelector('img').style.filter = 'none';
+                } else {
+                    card.style.borderColor = 'var(--accent-red)';
+                    card.style.background = 'rgba(239, 68, 68, 0.1)';
+                    card.querySelector('img').style.opacity = '0.3';
+                    card.querySelector('img').style.filter = 'grayscale(100%)';
+                }
+            }
+        }
+
+        document.querySelectorAll('.image-keep-cb').forEach(cb => {
+            // Set initial state
+            updateImageCardState(cb);
+            // Listen for changes
+            cb.addEventListener('change', () => {
+                updateImageCardState(cb);
+            });
+        });
+    </script>
 </body>
 </html>
