@@ -222,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         if (empty($imgClean)) continue;
                                     ?>
                                         <div class="image-card-box" style="border: 2px solid var(--border-color); padding: 0.5rem; background: #14110f; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; transition: all 0.2s;">
-                                            <img src="<?= htmlspecialchars(getStorageUrl($imgClean)) ?>" style="width: 100%; height: 80px; object-fit: cover; transition: all 0.2s;">
+                                            <img src="<?= htmlspecialchars(getStorageUrl($imgClean)) ?>" onclick="openAdminLightbox(this)" style="width: 100%; height: 80px; object-fit: cover; transition: all 0.2s; cursor: zoom-in;">
                                             <label style="font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem; cursor: pointer; user-select: none;">
                                                 <input type="checkbox" name="existing_image_urls[]" value="<?= htmlspecialchars($imgClean) ?>" checked class="image-keep-cb"> Conservar
                                             </label>
@@ -265,7 +265,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     </main>
 
+    <div id="admin-image-lightbox" class="brutal-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center; flex-direction: column; padding: 1rem;">
+        <div style="position: relative; max-width: 90%; max-height: 80%; border: 3px solid var(--border-color); background: var(--bg-boxes); padding: 5px; box-shadow: 10px 10px 0px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;">
+            <button id="close-admin-lightbox" class="close-btn" style="position: absolute; top: -15px; right: -15px; background: var(--accent-red); color: white; border: 2px solid var(--border-color); width: 35px; height: 35px; cursor: pointer; font-weight: bold; font-family: monospace; display: flex; align-items: center; justify-content: center;">X</button>
+            <img id="admin-lightbox-img" src="" style="max-width: 100%; max-height: 70vh; display: block; object-fit: contain;">
+        </div>
+        <div style="margin-top: 1.5rem;">
+            <button id="admin-lightbox-action-btn" type="button" class="btn-brutal-primary" style="padding: 0.8rem 1.5rem; font-size: 1rem; cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 900; letter-spacing: 0.5px; border-width: 3px; box-shadow: 4px 4px 0px rgba(0,0,0,0.4); text-transform: uppercase; transition: all 0.1s;"></button>
+        </div>
+    </div>
+
     <script>
+        // Lógica de visualización/eliminación desde Lightbox del Admin
+        let activeLightboxCb = null;
+        const adminLightbox = document.getElementById('admin-image-lightbox');
+        const adminLightboxImg = document.getElementById('admin-lightbox-img');
+        const adminLightboxActionBtn = document.getElementById('admin-lightbox-action-btn');
+        const closeAdminLightboxBtn = document.getElementById('close-admin-lightbox');
+
+        function openAdminLightbox(imgElement) {
+            const card = imgElement.closest('.image-card-box');
+            if (!card) return;
+
+            const cb = card.querySelector('.image-keep-cb');
+            if (!cb) return;
+
+            activeLightboxCb = cb;
+            adminLightboxImg.src = imgElement.src;
+            updateLightboxButtonState();
+            
+            adminLightbox.style.display = 'flex';
+        }
+
+        function updateLightboxButtonState() {
+            if (!activeLightboxCb) return;
+
+            if (activeLightboxCb.checked) {
+                adminLightboxActionBtn.textContent = "🗑️ Quitar del Proyecto";
+                adminLightboxActionBtn.style.background = "var(--accent-red)";
+                adminLightboxActionBtn.style.color = "white";
+                adminLightboxActionBtn.style.transform = "none";
+                adminLightboxActionBtn.style.boxShadow = "4px 4px 0px rgba(0,0,0,0.4)";
+            } else {
+                adminLightboxActionBtn.textContent = "✔️ Conservar en el Proyecto";
+                adminLightboxActionBtn.style.background = "var(--accent-blue)";
+                adminLightboxActionBtn.style.color = "white";
+                adminLightboxActionBtn.style.transform = "none";
+                adminLightboxActionBtn.style.boxShadow = "4px 4px 0px rgba(0,0,0,0.4)";
+            }
+        }
+
+        adminLightboxActionBtn.addEventListener('click', () => {
+            if (!activeLightboxCb) return;
+
+            // Alternar estado de la casilla
+            activeLightboxCb.checked = !activeLightboxCb.checked;
+            updateImageCardState(activeLightboxCb);
+            updateLightboxButtonState();
+        });
+
+        function closeAdminLightbox() {
+            adminLightbox.style.display = 'none';
+            activeLightboxCb = null;
+        }
+
+        closeAdminLightboxBtn.addEventListener('click', closeAdminLightbox);
+        adminLightbox.addEventListener('click', (e) => {
+            if (e.target === adminLightbox) {
+                closeAdminLightbox();
+            }
+        });
+
+        // Lógica de casillas y estados visuales existentes
         function toggleAllImages(checked) {
             const checkboxes = document.querySelectorAll('.image-keep-cb');
             checkboxes.forEach(cb => {
