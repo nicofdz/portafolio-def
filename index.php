@@ -217,9 +217,13 @@ try {
                         }
                     endif;
                     
-                    if (!empty($imageUrl)): ?>
+                    // Convertir a URLs completas usando getStorageUrl
+                    $fullImages = array_map('getStorageUrl', $cleanImages);
+                    $fullImageUrl = !empty($imageUrl) ? getStorageUrl($imageUrl) : null;
+                    
+                    if (!empty($fullImageUrl)): ?>
                         <div class="card-image">
-                            <img src="<?= htmlspecialchars($imageUrl) ?>" alt="<?= htmlspecialchars($project['title']) ?>">
+                            <img src="<?= htmlspecialchars($fullImageUrl) ?>" alt="<?= htmlspecialchars($project['title']) ?>">
                         </div>
                     <?php endif; ?>
                     <div class="card-top"><i class="ph-bold ph-code-block font-icon"></i><span class="card-id">Proyecto</span></div>
@@ -242,20 +246,14 @@ try {
                         
                         <?php 
                         $tags = !empty($project['tags']) ? str_getcsv(trim($project['tags'], '{}')) : [];
-                        if (!empty($tags)): 
-                            $visibleTags = array_slice($tags, 0, 4);
-                            $hasMoreTags = count($tags) > 4;
-                        ?>
+                        if (!empty($tags)): ?>
                             <div class="tech-tags">
-                                <?php foreach ($visibleTags as $tag): ?><span class="tech-badge">#<?= htmlspecialchars(trim($tag)) ?></span><?php endforeach; ?>
-                                <?php if ($hasMoreTags): ?>
-                                    <span class="tech-badge" style="background: rgba(255,255,255,0.05); color: var(--text-muted); border-color: rgba(255,255,255,0.1);">+<?= count($tags) - 4 ?> más</span>
-                                <?php endif; ?>
+                                <?php foreach ($tags as $tag): ?><span class="tech-badge">#<?= htmlspecialchars(trim($tag)) ?></span><?php endforeach; ?>
                             </div>
                         <?php endif; ?>
 
                         <div class="card-footer-actions">
-                            <button class="btn-read-more trigger-modal" data-title="<?= htmlspecialchars($project['title'], ENT_QUOTES) ?>" data-desc="<?= htmlspecialchars($fullDesc, ENT_QUOTES) ?>" data-images="<?= htmlspecialchars(json_encode($cleanImages), ENT_QUOTES) ?>" data-tags="<?= htmlspecialchars(json_encode($tags), ENT_QUOTES) ?>">Ver Detalles</button>
+                            <button class="btn-read-more trigger-modal" data-title="<?= htmlspecialchars($project['title'], ENT_QUOTES) ?>" data-desc="<?= htmlspecialchars($fullDesc, ENT_QUOTES) ?>" data-images="<?= htmlspecialchars(json_encode($fullImages), ENT_QUOTES) ?>">Ver Detalles</button>
                             
                             <div class="card-links">
                                 <?php if (!empty($project['github_url'])): ?><a href="<?= htmlspecialchars($project['github_url']) ?>" target="_blank" class="link-btn"><i class="ph-bold ph-github-logo"></i> Código</a><?php endif; ?>
@@ -295,7 +293,6 @@ try {
             <div class="modal-body">
                 <div id="modal-carousel" class="modal-carousel-container"></div>
                 <h3 id="modal-project-title"></h3>
-                <div id="modal-project-tags" class="tech-tags" style="margin-top: 0.5rem; margin-bottom: 1.5rem;"></div>
                 <div id="modal-project-desc" class="modal-desc-full"></div>
             </div>
         </div>
@@ -373,26 +370,6 @@ try {
                 document.getElementById('modal-project-title').textContent = button.getAttribute('data-title');
                 document.getElementById('modal-project-desc').textContent = button.getAttribute('data-desc');
                 document.getElementById('modal-title-display').textContent = `cat ${button.getAttribute('data-title').toLowerCase().replace(/\s+/g, '_')}.log`;
-                
-                // Cargar tecnologías (tags) del modal
-                const tagsData = button.getAttribute('data-tags');
-                let projectTags = [];
-                try {
-                    projectTags = JSON.parse(tagsData) || [];
-                } catch(e) {
-                    projectTags = [];
-                }
-
-                const modalTagsContainer = document.getElementById('modal-project-tags');
-                if (modalTagsContainer) {
-                    modalTagsContainer.innerHTML = '';
-                    projectTags.forEach(tag => {
-                        const span = document.createElement('span');
-                        span.className = 'tech-badge';
-                        span.textContent = '#' + tag.trim();
-                        modalTagsContainer.appendChild(span);
-                    });
-                }
                 
                 // Cargar carrusel de imágenes
                 const imagesData = button.getAttribute('data-images');
