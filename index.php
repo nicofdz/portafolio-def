@@ -219,11 +219,15 @@ try {
                     
                     // Convertir a URLs completas usando getStorageUrl
                     $fullImages = array_map('getStorageUrl', $cleanImages);
-                    $fullImageUrl = !empty($imageUrl) ? getStorageUrl($imageUrl) : null;
+                    $fullImageUrl = (!empty($imageUrl) && trim($imageUrl) !== '') ? getStorageUrl($imageUrl) : null;
                     
-                    if (!empty($fullImageUrl)): ?>
+                    if ($fullImageUrl): ?>
                         <div class="card-image">
                             <img src="<?= htmlspecialchars($fullImageUrl) ?>" alt="<?= htmlspecialchars($project['title']) ?>">
+                        </div>
+                    <?php else: ?>
+                        <div class="card-image placeholder-image" style="background: rgba(0, 0, 0, 0.3); display: flex; align-items: center; justify-content: center;">
+                            <i class="ph-fill ph-code-block" style="font-size: 4.5rem; color: var(--border-color); opacity: 0.35;"></i>
                         </div>
                     <?php endif; ?>
                     <div class="card-top"><i class="ph-bold ph-code-block font-icon"></i><span class="card-id">Proyecto</span></div>

@@ -135,7 +135,6 @@ nav a:hover {
 .brutal-card {
     display: flex;
     flex-direction: column;
-    height: 100%;
 }
 
 .card-image {
@@ -395,6 +394,7 @@ h2 {
 
 .projects-carousel {
     display: flex;
+    align-items: stretch;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     gap: 2rem;
