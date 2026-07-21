@@ -265,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     </main>
 
-    <div id="admin-image-lightbox" class="brutal-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center; flex-direction: column; padding: 1rem;">
+    <div id="admin-image-lightbox" class="brutal-modal-overlay" style="flex-direction: column; padding: 1rem;">
         <div style="position: relative; max-width: 90%; max-height: 80%; border: 3px solid var(--border-color); background: var(--bg-boxes); padding: 5px; box-shadow: 10px 10px 0px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;">
             <button id="close-admin-lightbox" class="close-btn" style="position: absolute; top: -15px; right: -15px; background: var(--accent-red); color: white; border: 2px solid var(--border-color); width: 35px; height: 35px; cursor: pointer; font-weight: bold; font-family: monospace; display: flex; align-items: center; justify-content: center;">X</button>
             <img id="admin-lightbox-img" src="" style="max-width: 100%; max-height: 70vh; display: block; object-fit: contain;">
@@ -294,7 +294,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             adminLightboxImg.src = imgElement.src;
             updateLightboxButtonState();
             
-            adminLightbox.style.display = 'flex';
+            adminLightbox.classList.add('active');
         }
 
         function updateLightboxButtonState() {
@@ -325,7 +325,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
 
         function closeAdminLightbox() {
-            adminLightbox.style.display = 'none';
+            adminLightbox.classList.remove('active');
             activeLightboxCb = null;
         }
 
